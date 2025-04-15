@@ -134,6 +134,7 @@
   <ItemGroup>
     <ClInclude Include="clsBankClient.h" />
     <ClInclude Include="clsClientScreens.h" />
+    <ClInclude Include="clsLoginScreen.h" />
     <ClInclude Include="clsMainScreen.h" />
     <ClInclude Include="clsManageUserScreen.h" />
     <ClInclude Include="clsPerson.h" />
@@ -141,6 +142,7 @@
     <ClInclude Include="clsTransactionsScreen.h" />
     <ClInclude Include="clsUser.h" />
     <ClInclude Include="clsUserScreens.h" />
+    <ClInclude Include="Global.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
