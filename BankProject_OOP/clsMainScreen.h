@@ -6,6 +6,7 @@
 #include "clsClientScreens.h"
 #include "clsTransactionsScreen.h"
 #include "clsManageUserScreen.h"
+#include "Global.h"
 
 using namespace std;
 
@@ -15,13 +16,13 @@ private:
     enum enMainMenueOptions {
         eListClients = 1, eAddNewClient = 2, eDeleteClient = 3,
         eUpdateClient = 4, eFindClient = 5, eShowTransactionsMenue = 6,
-        eManageUsers = 7, eExit = 8
+        eManageUsers = 7, eLogout = 8 ,eExit = 9
     };
 
     static short _ReadMainMenueOption()
     {
-        cout << setw(37) << left << "" << "Choose what do you want to do? [1 to 8]? ";
-        short Choice = clsInputValidate::ReadIntNumberBetween(1, 8, "Enter Number between 1 to 8? ");
+        cout << setw(37) << left << "" << "Choose what do you want to do? [1 to 9]? ";
+        short Choice = clsInputValidate::ReadIntNumberBetween(1, 9, "Enter Number between 1 to 9? ");
         return Choice;
     }
 
@@ -60,9 +61,10 @@ private:
         clsManageUserScreen::ShowManageUsersMenue();
     }
 
-    static void _ShowEndScreen()
+    static void _Logout()
     {
-        cout << "\nEnd Screen Will be here...\n";
+        CurrentUser = clsUser::Find("", "");
+        // then it will return to main function...
     }
 
     static  void _GoBackToMainMenue()
@@ -73,62 +75,82 @@ private:
         ShowMainMenue();
     }
 
+    static  void _DeniedAccess()
+    {
+        _DrawScreenHeader("Access Denied! Contact your Admin.");
+    }
+
+    static bool _CheckAccessPermission(clsUser::enPermissions permission)
+    {
+        if (!CurrentUser.CheckUserPermissions(permission)) {
+            _DeniedAccess();
+            _GoBackToMainMenue();
+            return false;
+        }
+        return true;
+    }
 
     static void _PerfromMainMenueOption(enMainMenueOptions MainMenueOption)
     {
+        system("cls");
         switch (MainMenueOption)
         {
-        case enMainMenueOptions::eListClients:
-        {
-            system("cls");
-            _ShowAllClientsScreen();
-            _GoBackToMainMenue();
-            break;
+            case enMainMenueOptions::eListClients:
+                if (_CheckAccessPermission(clsUser::enPermissions::pListClients)) {
+                    _ShowAllClientsScreen();
+                    _GoBackToMainMenue();
+                }
+                break;
+
+            case enMainMenueOptions::eAddNewClient:
+                if (_CheckAccessPermission(clsUser::enPermissions::pAddNewClient)) {
+                    _ShowAddNewClientsScreen();
+                    _GoBackToMainMenue();
+                }
+                break;
+
+            case enMainMenueOptions::eDeleteClient:
+                if (_CheckAccessPermission(clsUser::enPermissions::pDeleteClient)) {
+                    _ShowDeleteClientScreen();
+                    _GoBackToMainMenue();
+                }
+                break;
+
+            case enMainMenueOptions::eUpdateClient:
+                if (_CheckAccessPermission(clsUser::enPermissions::pUpdateClients)) {
+                    _ShowUpdateClientScreen();
+                    _GoBackToMainMenue();
+                }
+                break;
+
+            case enMainMenueOptions::eFindClient:
+                if (_CheckAccessPermission(clsUser::enPermissions::pFindClient)) {
+                    _ShowFindClientScreen();
+                    _GoBackToMainMenue();
+                }
+                break;
+
+            case enMainMenueOptions::eShowTransactionsMenue:
+                if (_CheckAccessPermission(clsUser::enPermissions::pTranactions)) {
+                    _ShowTransactionsMenue();
+                    _GoBackToMainMenue();
+                }
+                break;
+
+            case enMainMenueOptions::eManageUsers:
+                if (_CheckAccessPermission(clsUser::enPermissions::pManageUsers)) {
+                    _ShowManageUsersMenue();
+                    _GoBackToMainMenue();
+                }
+                break;
+
+            case enMainMenueOptions::eLogout:
+                _Logout();
+                break;
+            case enMainMenueOptions::eExit:
+                exit(0);
+                break;
         }
-        case enMainMenueOptions::eAddNewClient:
-            system("cls");
-            _ShowAddNewClientsScreen();
-            _GoBackToMainMenue();
-            break;
-
-        case enMainMenueOptions::eDeleteClient:
-            system("cls");
-            _ShowDeleteClientScreen();
-            _GoBackToMainMenue();
-            break;
-
-        case enMainMenueOptions::eUpdateClient:
-            system("cls");
-            _ShowUpdateClientScreen();
-            _GoBackToMainMenue();
-            break;
-
-        case enMainMenueOptions::eFindClient:
-            system("cls");
-            _ShowFindClientScreen();
-            _GoBackToMainMenue();
-            break;
-
-        case enMainMenueOptions::eShowTransactionsMenue:
-            system("cls");
-            _ShowTransactionsMenue();
-            _GoBackToMainMenue();
-            break;
-
-        case enMainMenueOptions::eManageUsers:
-            system("cls");
-            _ShowManageUsersMenue();
-            _GoBackToMainMenue();
-            break;
-
-        case enMainMenueOptions::eExit:
-            system("cls");
-            _ShowEndScreen();
-            //Login();
-
-            break;
-        }
-
     }
 
 public:
@@ -148,6 +170,7 @@ public:
         cout << setw(37) << left << "" << "\t[6] Transactions.\n";
         cout << setw(37) << left << "" << "\t[7] Manage Users.\n";
         cout << setw(37) << left << "" << "\t[8] Logout.\n";
+        cout << setw(37) << left << "" << "\t[9] Exit.\n";
         cout << setw(37) << left << "" << "===========================================\n";
 
         _PerfromMainMenueOption((enMainMenueOptions)_ReadMainMenueOption());
