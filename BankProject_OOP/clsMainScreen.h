@@ -75,63 +75,82 @@ private:
         ShowMainMenue();
     }
 
+    static  void _DeniedAccess()
+    {
+        _DrawScreenHeader("Access Denied! Contact your Admin.");
+    }
+
+    static bool _CheckAccessPermission(clsUser::enPermissions permission)
+    {
+        if (!CurrentUser.CheckUserPermissions(permission)) {
+            _DeniedAccess();
+            _GoBackToMainMenue();
+            return false;
+        }
+        return true;
+    }
 
     static void _PerfromMainMenueOption(enMainMenueOptions MainMenueOption)
     {
+        system("cls");
         switch (MainMenueOption)
         {
-        case enMainMenueOptions::eListClients:
-        {
-            system("cls");
-            _ShowAllClientsScreen();
-            _GoBackToMainMenue();
-            break;
+            case enMainMenueOptions::eListClients:
+                if (_CheckAccessPermission(clsUser::enPermissions::pListClients)) {
+                    _ShowAllClientsScreen();
+                    _GoBackToMainMenue();
+                }
+                break;
+
+            case enMainMenueOptions::eAddNewClient:
+                if (_CheckAccessPermission(clsUser::enPermissions::pAddNewClient)) {
+                    _ShowAddNewClientsScreen();
+                    _GoBackToMainMenue();
+                }
+                break;
+
+            case enMainMenueOptions::eDeleteClient:
+                if (_CheckAccessPermission(clsUser::enPermissions::pDeleteClient)) {
+                    _ShowDeleteClientScreen();
+                    _GoBackToMainMenue();
+                }
+                break;
+
+            case enMainMenueOptions::eUpdateClient:
+                if (_CheckAccessPermission(clsUser::enPermissions::pUpdateClients)) {
+                    _ShowUpdateClientScreen();
+                    _GoBackToMainMenue();
+                }
+                break;
+
+            case enMainMenueOptions::eFindClient:
+                if (_CheckAccessPermission(clsUser::enPermissions::pFindClient)) {
+                    _ShowFindClientScreen();
+                    _GoBackToMainMenue();
+                }
+                break;
+
+            case enMainMenueOptions::eShowTransactionsMenue:
+                if (_CheckAccessPermission(clsUser::enPermissions::pTranactions)) {
+                    _ShowTransactionsMenue();
+                    _GoBackToMainMenue();
+                }
+                break;
+
+            case enMainMenueOptions::eManageUsers:
+                if (_CheckAccessPermission(clsUser::enPermissions::pManageUsers)) {
+                    _ShowManageUsersMenue();
+                    _GoBackToMainMenue();
+                }
+                break;
+
+            case enMainMenueOptions::eLogout:
+                _Logout();
+                break;
+            case enMainMenueOptions::eExit:
+                exit(0);
+                break;
         }
-        case enMainMenueOptions::eAddNewClient:
-            system("cls");
-            _ShowAddNewClientsScreen();
-            _GoBackToMainMenue();
-            break;
-
-        case enMainMenueOptions::eDeleteClient:
-            system("cls");
-            _ShowDeleteClientScreen();
-            _GoBackToMainMenue();
-            break;
-
-        case enMainMenueOptions::eUpdateClient:
-            system("cls");
-            _ShowUpdateClientScreen();
-            _GoBackToMainMenue();
-            break;
-
-        case enMainMenueOptions::eFindClient:
-            system("cls");
-            _ShowFindClientScreen();
-            _GoBackToMainMenue();
-            break;
-
-        case enMainMenueOptions::eShowTransactionsMenue:
-            system("cls");
-            _ShowTransactionsMenue();
-            _GoBackToMainMenue();
-            break;
-
-        case enMainMenueOptions::eManageUsers:
-            system("cls");
-            _ShowManageUsersMenue();
-            _GoBackToMainMenue();
-            break;
-
-        case enMainMenueOptions::eLogout:
-            system("cls");
-            _Logout();
-            break;
-        case enMainMenueOptions::eExit:
-            exit(0);
-            break;
-        }
-
     }
 
 public:
