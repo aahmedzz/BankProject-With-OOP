@@ -4,6 +4,7 @@
 #include <vector>
 #include<fstream>
 #include "D:\AHMED\Abu hahoud\My Liberaries\clsString.h"
+#include "D:\AHMED\Abu hahoud\My Liberaries\clsDate.h"
 #include "clsPerson.h"
 using namespace std;
 
@@ -149,6 +150,15 @@ private:
         return clsUser(enMode::EmptyMode, "", "", "", "", "", "", 0);
     }
 
+    string _CreateLogInRecord(string Seperator = "#//#")
+    {
+        string LoginRecord = "";
+        LoginRecord += clsDate::GetSystemDateTimeString() + Seperator;
+        LoginRecord += this->UserName + Seperator;
+        LoginRecord += this->Password + Seperator;
+        LoginRecord += to_string(this->Permissions);
+        return LoginRecord;
+    }
 public:
     enum enPermissions {
         eAll = -1, pListClients = 1, pAddNewClient = 2, pDeleteClient = 4,
@@ -350,6 +360,17 @@ public:
             return true;
         else
             return false;
+    }
+
+    void RegisterLogIn() 
+    {
+        fstream MyFile;
+        string RegisterRecord = _CreateLogInRecord();
+        MyFile.open("LoginRegister.txt", ios::out | ios::app);
+        if (MyFile.is_open()) {
+            MyFile << RegisterRecord << endl;
+            MyFile.close();
+        }
     }
 };
 
