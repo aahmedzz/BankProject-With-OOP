@@ -10,9 +10,12 @@ int main()
 {
     //this will make the login screen displayed again after logout.
     while (true) {
-        clsLoginScreen::ShowLoginScreen();
+        if (!clsLoginScreen::ShowLoginScreen())
+        {
+            break;
+        }
     }
 
-    system("pause>0");
+    return 0;
 }
 
