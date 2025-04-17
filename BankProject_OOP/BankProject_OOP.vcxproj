@@ -128,8 +128,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BankProject_OOP.cpp" />
-    <ClCompile Include="clsClientScreens.cpp" />
-    <ClCompile Include="clsTransactionsScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="clsBankClient.h" />
