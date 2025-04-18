@@ -15,13 +15,13 @@ class clsTransactionsScreen :protected clsScreen
 private:
     enum enTransactionsMenueOptions {
         eDeposit = 1, eWithdraw = 2,
-        eShowTotalBalance = 3, eTransfer = 4,
-        eShowMainMenue = 5 ,
+        eShowTotalBalance = 3, eTransfer = 4, eTransferScreen = 5,
+        eShowMainMenue = 6,
     };
     static short ReadTransactionsMenueOption()
     {
-        cout << setw(37) << left << "" << "Choose what do you want to do? [1 to 5]? ";
-        short Choice = clsInputValidate::ReadIntNumberBetween(1, 5, "Enter Number between 1 to 5? ");
+        cout << setw(37) << left << "" << "Choose what do you want to do? [1 to 6]? ";
+        short Choice = clsInputValidate::ReadIntNumberBetween(1, 6, "Enter Number between 1 to 6? ");
         return Choice;
     }
     static void _PrintClient(clsBankClient Client)
@@ -83,6 +83,19 @@ private:
             Amount = clsInputValidate::ReadFloatNumber();
         }
         return Amount;
+    }
+    static void PrintTransferLogRecordLine(clsBankClient::stTrnsferLogRecord TransferLogRecord)
+    {
+
+        cout << setw(8) << left << "" << "| " << setw(23) << left << TransferLogRecord.DateTime;
+        cout << "| " << setw(8) << left << TransferLogRecord.SourceAccountNumber;
+        cout << "| " << setw(8) << left << TransferLogRecord.DestinationAccountNumber;
+        cout << "| " << setw(8) << left << TransferLogRecord.Amount;
+        cout << "| " << setw(10) << left << TransferLogRecord.srcBalanceAfter;
+        cout << "| " << setw(10) << left << TransferLogRecord.destBalanceAfter;
+        cout << "| " << setw(8) << left << TransferLogRecord.UserName;
+
+
     }
 
 
@@ -238,6 +251,44 @@ private:
         _PrintClient(DestinationClient);
     }
 
+    static void _ShowTransferListScreen()
+    {
+        vector <clsBankClient::stTrnsferLogRecord> vTransferLogRecord = clsBankClient::GetTransfersLogList();
+
+        string Title = "\tTransfer Log List Screen";
+        string SubTitle = "\t    (" + to_string(vTransferLogRecord.size()) + ") Record(s).";
+
+        _DrawScreenHeader(Title, SubTitle);
+
+        cout << setw(8) << left << "" << "\n\t_______________________________________________________";
+        cout << "_________________________________________\n" << endl;
+
+        cout << setw(8) << left << "" << "| " << left << setw(23) << "Date/Time";
+        cout << "| " << left << setw(8) << "s.Acct";
+        cout << "| " << left << setw(8) << "d.Acct";
+        cout << "| " << left << setw(8) << "Amount";
+        cout << "| " << left << setw(10) << "s.Balance";
+        cout << "| " << left << setw(10) << "d.Balance";
+        cout << "| " << left << setw(8) << "User";
+
+        cout << setw(8) << left << "" << "\n\t_______________________________________________________";
+        cout << "_________________________________________\n" << endl;
+
+        if (vTransferLogRecord.size() == 0)
+            cout << "\t\t\t\tNo Transfers Available In the System!";
+        else
+
+            for (clsBankClient::stTrnsferLogRecord Record : vTransferLogRecord)
+            {
+
+                PrintTransferLogRecordLine(Record);
+                cout << endl;
+            }
+
+        cout << setw(8) << left << "" << "\n\t_______________________________________________________";
+        cout << "_________________________________________\n" << endl;
+    }
+
     static void _GoBackToTransactionsMenue()
     {
         cout << "\n\nPress any key to go back to Transactions Menue...";
@@ -281,13 +332,20 @@ private:
                 break;
             }
 
+            case enTransactionsMenueOptions::eTransferScreen:
+            {
+                system("cls");
+                _ShowTransferListScreen();
+                _GoBackToTransactionsMenue();
+                break;
+            }
+
             case enTransactionsMenueOptions::eShowMainMenue:
             {
             }
         }
 
     }
-
 
 public:
 
@@ -303,7 +361,8 @@ public:
         cout << setw(37) << left << "" << "\t[2] Withdraw.\n";
         cout << setw(37) << left << "" << "\t[3] Total Balances.\n";
         cout << setw(37) << left << "" << "\t[4] Transfer.\n";
-        cout << setw(37) << left << "" << "\t[5] Main Menue.\n";
+        cout << setw(37) << left << "" << "\t[5] Transfer Screen.\n";
+        cout << setw(37) << left << "" << "\t[6] Main Menue.\n";
         cout << setw(37) << left << "" << "===========================================\n";
 
         _PerformTransactionsMenueOption((enTransactionsMenueOptions)ReadTransactionsMenueOption());
