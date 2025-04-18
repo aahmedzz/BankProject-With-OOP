@@ -16,13 +16,13 @@ private:
     enum enMainMenueOptions {
         eListClients = 1, eAddNewClient = 2, eDeleteClient = 3,
         eUpdateClient = 4, eFindClient = 5, eShowTransactionsMenue = 6,
-        eManageUsers = 7, eLogout = 8 ,eExit = 9
+        eManageUsers = 7,eShowLoginRegister = 8, eLogout = 9 ,eExit = 10
     };
 
     static short _ReadMainMenueOption()
     {
-        cout << setw(37) << left << "" << "Choose what do you want to do? [1 to 9]? ";
-        short Choice = clsInputValidate::ReadIntNumberBetween(1, 9, "Enter Number between 1 to 9? ");
+        cout << setw(37) << left << "" << "Choose what do you want to do? [1 to 10]? ";
+        short Choice = clsInputValidate::ReadIntNumberBetween(1, 10, "Enter Number between 1 to 10? ");
         return Choice;
     }
 
@@ -59,6 +59,11 @@ private:
     static void _ShowManageUsersMenue()
     {
         clsManageUserScreen::ShowManageUsersMenue();
+    }
+
+    static void _ShowLoginRegisterScreen()
+    {
+        clsUserScreens::ShowLoginRegisterScreen();
     }
 
     static void _Logout()
@@ -144,6 +149,13 @@ private:
                 }
                 break;
 
+            case enMainMenueOptions::eShowLoginRegister:
+                if (_CheckAccessPermission(clsUser::enPermissions::pShowLogInRegister)) {
+                    clsUserScreens::ShowLoginRegisterScreen();
+                    _GoBackToMainMenue();
+                }
+                break;
+
             case enMainMenueOptions::eLogout:
                 _Logout();
                 break;
@@ -169,8 +181,9 @@ public:
         cout << setw(37) << left << "" << "\t[5] Find Client.\n";
         cout << setw(37) << left << "" << "\t[6] Transactions.\n";
         cout << setw(37) << left << "" << "\t[7] Manage Users.\n";
-        cout << setw(37) << left << "" << "\t[8] Logout.\n";
-        cout << setw(37) << left << "" << "\t[9] Exit.\n";
+        cout << setw(37) << left << "" << "\t[8] Login Register.\n";
+        cout << setw(37) << left << "" << "\t[9] Logout.\n";
+        cout << setw(37) << left << "" << "\t[10] Exit.\n";
         cout << setw(37) << left << "" << "===========================================\n";
 
         _PerfromMainMenueOption((enMainMenueOptions)_ReadMainMenueOption());
