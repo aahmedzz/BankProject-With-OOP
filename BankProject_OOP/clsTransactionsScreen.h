@@ -15,12 +15,13 @@ class clsTransactionsScreen :protected clsScreen
 private:
     enum enTransactionsMenueOptions {
         eDeposit = 1, eWithdraw = 2,
-        eShowTotalBalance = 3, eShowMainMenue = 4
+        eShowTotalBalance = 3, eTransfer = 4,
+        eShowMainMenue = 5 ,
     };
     static short ReadTransactionsMenueOption()
     {
-        cout << setw(37) << left << "" << "Choose what do you want to do? [1 to 4]? ";
-        short Choice = clsInputValidate::ReadIntNumberBetween(1, 4, "Enter Number between 1 to 4? ");
+        cout << setw(37) << left << "" << "Choose what do you want to do? [1 to 5]? ";
+        short Choice = clsInputValidate::ReadIntNumberBetween(1, 5, "Enter Number between 1 to 5? ");
         return Choice;
     }
     static void _PrintClient(clsBankClient Client)
@@ -45,14 +46,49 @@ private:
         cin >> AccountNumber;
         return AccountNumber;
     }
+    static string _ReadAccountNumber(bool FromClient)
+    {
+        string AccountNumber;
+        if (FromClient) {
+            cout << "\nPlease Enter Account Number to Transfer From: ";
+        }
+        else {
+            cout << "\nPlease Enter Account Number to Transfer To: ";
+        }
+        AccountNumber = clsInputValidate::ReadString();
+        while (!clsBankClient::IsClientExist(AccountNumber))
+        {
+            cout << "\nAccount number is not found, choose another one: ";
+            AccountNumber = clsInputValidate::ReadString();
+        }
+        return AccountNumber;
+    }
     static void PrintClientRecordBalanceLine(clsBankClient Client)
     {
         cout << setw(25) << left << "" << "| " << setw(15) << left << Client.AccountNumber();
         cout << "| " << setw(40) << left << Client.FullName();
         cout << "| " << setw(12) << left << Client.AccountBalance;
     }
+    static float ReadAmount(clsBankClient SourceClient)
+    {
+        float Amount;
 
-    static void DepositPage() {
+        cout << "\nEnter Transfer Amount? ";
+
+        Amount = clsInputValidate::ReadFloatNumber();
+
+        while (Amount > SourceClient.AccountBalance)
+        {
+            cout << "\nAmount Exceeds the available Balance, Enter another Amount ? ";
+            Amount = clsInputValidate::ReadFloatNumber();
+        }
+        return Amount;
+    }
+
+
+
+    static void _ShowDepositScreen()
+    {
         _DrawScreenHeader("\t   Deposit Screen");
 
         string AccountNumber = _ReadAccountNumber();
@@ -87,7 +123,9 @@ private:
             cout << "\nOperation was cancelled.\n";
         }
     }
-    static void WithdrawPage() {
+
+    static void _ShowWithdrawScreen()
+    {
         _DrawScreenHeader("\t   Withdraw Screen");
 
         string AccountNumber = _ReadAccountNumber();
@@ -131,7 +169,9 @@ private:
             cout << "\nOperation was cancelled.\n";
         }
     }
-    static void TotalbalancesPage() {
+
+    static void _ShowTotalBalancesScreen()
+    {
         vector <clsBankClient> vClients = clsBankClient::GetClientsList();
 
         string Title = "\t  Balances List Screen";
@@ -167,19 +207,35 @@ private:
         cout << setw(8) << left << "" << "\t\t\t  ( " << clsUtil::NumberToText(TotalBalances) << ")";
     }
 
-    static void _ShowDepositScreen()
+    static void _ShowTransferScreen()
     {
-        DepositPage();
-    }
+        _DrawScreenHeader("\tTransfer Screen");
 
-    static void _ShowWithdrawScreen()
-    {
-        WithdrawPage();
-    }
+        clsBankClient SourceClient = clsBankClient::Find(_ReadAccountNumber(true));
+        _PrintClient(SourceClient);
 
-    static void _ShowTotalBalancesScreen()
-    {
-        TotalbalancesPage();
+        clsBankClient DestinationClient = clsBankClient::Find(_ReadAccountNumber(false));
+        _PrintClient(DestinationClient);
+
+        float Amount = ReadAmount(SourceClient);
+
+        cout << "\nAre you sure you want to perform this operation? y/n? ";
+        char Answer = 'n';
+        cin >> Answer;
+        if (Answer == 'Y' || Answer == 'y')
+        {
+            if (SourceClient.Transfer(Amount, DestinationClient))
+            {
+                cout << "\nTransfer done successfully\n";
+            }
+            else
+            {
+                cout << "\nTransfer Faild \n";
+            }
+        }
+
+        _PrintClient(SourceClient);
+        _PrintClient(DestinationClient);
     }
 
     static void _GoBackToTransactionsMenue()
@@ -217,6 +273,13 @@ private:
                 break;
             }
 
+            case enTransactionsMenueOptions::eTransfer:
+            {
+                system("cls");
+                _ShowTransferScreen();
+                _GoBackToTransactionsMenue();
+                break;
+            }
 
             case enTransactionsMenueOptions::eShowMainMenue:
             {
@@ -239,7 +302,8 @@ public:
         cout << setw(37) << left << "" << "\t[1] Deposit.\n";
         cout << setw(37) << left << "" << "\t[2] Withdraw.\n";
         cout << setw(37) << left << "" << "\t[3] Total Balances.\n";
-        cout << setw(37) << left << "" << "\t[4] Main Menue.\n";
+        cout << setw(37) << left << "" << "\t[4] Transfer.\n";
+        cout << setw(37) << left << "" << "\t[5] Main Menue.\n";
         cout << setw(37) << left << "" << "===========================================\n";
 
         _PerformTransactionsMenueOption((enTransactionsMenueOptions)ReadTransactionsMenueOption());

@@ -307,5 +307,17 @@ class clsBankClient: public clsPerson
                 return true;
             }
         }
+
+        bool Transfer(float Amount, clsBankClient DestinationClient) {
+            if (this->AccountBalance < Amount) {
+                return false;
+            }
+            else
+            {
+                this->Withdraw(Amount);
+                DestinationClient.Deposit(Amount);
+                return true;
+            }
+        }
 };
 
