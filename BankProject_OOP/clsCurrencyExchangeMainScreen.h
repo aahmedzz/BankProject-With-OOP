@@ -47,8 +47,7 @@ private:
 
     static void _ShowCurrencyCalculatorScreen()
     {
-        cout << "\nCurrency Calculator Screen Will Be Here.\n";
-
+        clsCurrencyScreens::ShowCurrencyCalculatorScreen();
     }
 
     static void _PerformCurrenciesMainMenueOptions(enCurrenciesMainMenueOptions CurrenciesMainMenueOptions)
