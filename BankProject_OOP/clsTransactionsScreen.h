@@ -1,8 +1,8 @@
 #pragma once
 #include <iostream>
 #include "clsScreen.h"
-#include "D://AHMED/Abu hahoud/My Liberaries/clsUtil.h"
-#include "D://AHMED/Abu hahoud/My Liberaries/clsInputValidate.h"
+#include "clsUtil.h"
+#include "clsInputValidate.h"
 #include "clsBankClient.h"
 #include <iomanip>
 

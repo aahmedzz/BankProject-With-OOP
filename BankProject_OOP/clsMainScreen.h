@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include <iomanip>
-#include "D://AHMED/Abu hahoud/My Liberaries/clsInputValidate.h"
+#include "clsInputValidate.h"
 #include "clsScreen.h"
 #include "clsClientScreens.h"
 #include "clsTransactionsScreen.h"

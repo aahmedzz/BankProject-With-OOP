@@ -2,7 +2,7 @@
 
 #include<iostream>
 #include<string>
-#include "D://AHMED/Abu hahoud/My Liberaries/clsString.h"
+#include "clsString.h"
 #include <vector>
 #include <fstream>
 class clsCurrency

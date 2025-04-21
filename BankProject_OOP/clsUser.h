@@ -3,9 +3,10 @@
 #include <string>
 #include <vector>
 #include<fstream>
-#include "D:\AHMED\Abu hahoud\My Liberaries\clsString.h"
-#include "D:\AHMED\Abu hahoud\My Liberaries\clsDate.h"
-#include "D:\AHMED\Abu hahoud\My Liberaries\clsUtil.h"
+//#include "D:\AHMED\Abu hahoud\My Liberaries\clsString.h"
+#include "clsString.h"
+#include "clsDate.h"
+#include "clsUtil.h"
 #include "clsPerson.h"
 using namespace std;
 

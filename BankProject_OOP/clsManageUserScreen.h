@@ -2,7 +2,7 @@
 #include <iostream>
 #include "clsScreen.h"
 #include "clsUserScreens.h"
-#include "D://AHMED/Abu hahoud/My Liberaries/clsInputValidate.h"
+#include "clsInputValidate.h"
 #include <iomanip>
 
 using namespace std;

@@ -135,6 +135,8 @@
     <ClInclude Include="clsCurrency.h" />
     <ClInclude Include="clsCurrencyExchangeMainScreen.h" />
     <ClInclude Include="clsCurrencyScreens.h" />
+    <ClInclude Include="clsDate.h" />
+    <ClInclude Include="clsInputValidate.h" />
     <ClInclude Include="clsLoginScreen.h" />
     <ClInclude Include="clsMainScreen.h" />
     <ClInclude Include="clsManageUserScreen.h" />
@@ -143,6 +145,8 @@
     <ClInclude Include="clsTransactionsScreen.h" />
     <ClInclude Include="clsUser.h" />
     <ClInclude Include="clsUserScreens.h" />
+    <ClInclude Include="clsString.h" />
+    <ClInclude Include="clsUtil.h" />
     <ClInclude Include="Global.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

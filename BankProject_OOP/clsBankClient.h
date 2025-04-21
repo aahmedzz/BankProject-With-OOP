@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 #include<fstream>
-#include "D:\AHMED\Abu hahoud\My Liberaries\clsString.h"
+#include "clsString.h"
 #include "clsPerson.h"
 using namespace std;
 
