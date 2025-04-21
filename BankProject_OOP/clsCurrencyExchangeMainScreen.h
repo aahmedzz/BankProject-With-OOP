@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include "clsScreen.h"
+#include "clsCurrencyScreens.h"
 #include "D://AHMED/Abu hahoud/My Liberaries/clsInputValidate.h"
 #include <iomanip>
 
@@ -31,8 +32,7 @@ private:
 
     static void _ShowCurrenciesListScreen()
     {
-        cout << "\nCurriencies List Screen Will Be Here.\n";
-
+        clsCurrencyScreens::ShowCurrenciesListScreen();
     }
 
     static void _ShowFindCurrencyScreen()
